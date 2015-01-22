@@ -1,10 +1,16 @@
 #!/bin/env python
 
-import SocketServer
-import BaseHTTPServer
-import SimpleHTTPServer
+try:
+    # Python 2.x
+    from SocketServer import ThreadingMixIn
+    from SimpleHTTPServer import SimpleHTTPRequestHandler
+    from BaseHTTPServer import HTTPServer
+except ImportError:
+    # Python 3.x
+    from socketserver import ThreadingMixIn
+    from http.server import SimpleHTTPRequestHandler, HTTPServer
 
-class ThreadingSimpleServer(SocketServer.ThreadingMixIn, BaseHTTPServer.HTTPServer):
+class ThreadingSimpleServer(ThreadingMixIn, HTTPServer):
     pass
 
 import sys
@@ -18,10 +24,10 @@ else:
 if sys.argv[2:]:
     os.chdir(sys.argv[2])
 
-server = ThreadingSimpleServer(('', port), SimpleHTTPServer.SimpleHTTPRequestHandler)
+server = ThreadingSimpleServer(('', port), SimpleHTTPRequestHandler)
 try:
     while 1:
         sys.stdout.flush()
         server.handle_request()
 except KeyboardInterrupt:
-    print "Finished"
+    print("Finished")
