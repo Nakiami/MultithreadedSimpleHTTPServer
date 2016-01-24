@@ -17,14 +17,21 @@ import sys
 import os
 
 if sys.argv[1:]:
-    port = int(sys.argv[1])
+    address = sys.argv[1]
+    if (':' in address):
+        interface = address.split(':')[0]
+        port = int(address.split(':')[1])
+    else:
+        interface = ''
+        port = int(address)
 else:
     port = 8000
+    interface = ''
 
 if sys.argv[2:]:
     os.chdir(sys.argv[2])
 
-server = ThreadingSimpleServer(('', port), SimpleHTTPRequestHandler)
+server = ThreadingSimpleServer((interface, port), SimpleHTTPRequestHandler)
 try:
     while 1:
         sys.stdout.flush()
