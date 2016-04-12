@@ -22,14 +22,16 @@ if sys.argv[1:]:
         interface = address.split(':')[0]
         port = int(address.split(':')[1])
     else:
-        interface = ''
+        interface = '0.0.0.0'
         port = int(address)
 else:
     port = 8000
-    interface = ''
+    interface = '0.0.0.0'
 
 if sys.argv[2:]:
     os.chdir(sys.argv[2])
+
+print 'Started HTTP server on ' +  interface + ':' + str(port)
 
 server = ThreadingSimpleServer((interface, port), SimpleHTTPRequestHandler)
 try:
@@ -37,4 +39,4 @@ try:
         sys.stdout.flush()
         server.handle_request()
 except KeyboardInterrupt:
-    print("Finished")
+    print 'Finished.'
