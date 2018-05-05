@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/usr/bin/env python
 
 try:
     # Python 2.x
@@ -17,17 +17,26 @@ import sys
 import os
 
 if sys.argv[1:]:
-    port = int(sys.argv[1])
+    address = sys.argv[1]
+    if (':' in address):
+        interface = address.split(':')[0]
+        port = int(address.split(':')[1])
+    else:
+        interface = '0.0.0.0'
+        port = int(address)
 else:
     port = 8000
+    interface = '0.0.0.0'
 
 if sys.argv[2:]:
     os.chdir(sys.argv[2])
 
-server = ThreadingSimpleServer(('', port), SimpleHTTPRequestHandler)
+print 'Started HTTP server on ' +  interface + ':' + str(port)
+
+server = ThreadingSimpleServer((interface, port), SimpleHTTPRequestHandler)
 try:
     while 1:
         sys.stdout.flush()
         server.handle_request()
 except KeyboardInterrupt:
-    print("Finished")
+    print 'Finished.'
