@@ -31,7 +31,7 @@ else:
 if sys.argv[2:]:
     os.chdir(sys.argv[2])
 
-print 'Started HTTP server on ' +  interface + ':' + str(port)
+print('Started HTTP server on ' +  interface + ':' + str(port))
 
 server = ThreadingSimpleServer((interface, port), SimpleHTTPRequestHandler)
 try:
@@ -39,4 +39,4 @@ try:
         sys.stdout.flush()
         server.handle_request()
 except KeyboardInterrupt:
-    print 'Finished.'
+    print('Finished.')
